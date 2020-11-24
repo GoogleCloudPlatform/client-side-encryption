@@ -40,13 +40,15 @@ class TestEnabledAPIs(unittest.TestCase):
                          'oslogin.googleapis.com'}
 
   def test_enabled_apis(self):
-    """Test enabled APIs."""
+    """Testing to see if any APIs need to be flipped."""
     # Get application-default credentials and initialize API client
     credentials = GoogleCredentials.get_application_default()
     project = 'projects/' + self.project_id
     service = discovery.build('serviceusage', 'v1', credentials=credentials)
     try:
       apis = {'ENABLED': [], 'DISABLED': []}
+      # Set the next page token to 'first' just so we know not to include that
+      # argument in the first services().list() call
       next_page = 'first'
       # Iterate over pages of API responses
       while next_page:
@@ -68,6 +70,7 @@ class TestEnabledAPIs(unittest.TestCase):
             apis[item['state']].append(item['config']['name'])
         # Assert that the expected enabled APIs are equal to the actual enabled
         # APIs
-        self.assertEquals(self.enabled_apis, set(apis['ENABLED']))
+      self.assertSetEqual(self.enabled_apis, set(apis['ENABLED']),
+                          'APIs that need to be enabled or disabled')
     except Exception as e:
       raise e
