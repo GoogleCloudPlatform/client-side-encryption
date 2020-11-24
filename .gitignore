@@ -141,3 +141,6 @@ creds.json
 venv/
 .idea/
 testfile
+id_rsa
+id_rsa.pub
+metadata
