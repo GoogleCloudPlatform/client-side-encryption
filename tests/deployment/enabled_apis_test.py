@@ -24,7 +24,8 @@ from oauth2client.client import GoogleCredentials
 __unittest = True
 
 class TestEnabledAPIs(unittest.TestCase):
-  """Test cases for enabled APIs."""
+  """Test cases for enabled APIs. Note that this test requires the PROJECT_ID
+  environment variable to be set."""
 
   def setUp(self) -> None:
     """Call super class' setup and define some variables."""
