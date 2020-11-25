@@ -30,8 +30,7 @@ class TestEnabledAPIs(unittest.TestCase):
   def setUp(self) -> None:
     """Call super class' setup and define some variables."""
     super().setUp()
-    PROJECT_ID = os.getenv('PROJECT_ID', 'my-project')
-    self.project_id = PROJECT_ID
+    self.project_id = os.getenv('PROJECT_ID', 'my-project')
     self.enabled_apis = {'assuredworkloads.googleapis.com',
                          'cloudkms.googleapis.com',
                          'compute.googleapis.com',

@@ -30,12 +30,9 @@ class TestAssuredWorkloads(unittest.TestCase):
   def setUp(self) -> None:
     """Call super class' setup and define some variables."""
     super().setUp()
-    PROJECT_ID = os.getenv('PROJECT_ID', 'my-project')
-    ORG_ID = os.getenv('ORG_ID', 'my-org')
-    REGION = os.getenv('REGION', 'us-central1')
-    self.project_id = PROJECT_ID
-    self.org_id = ORG_ID
-    self.region = REGION
+    self.project_id = os.getenv('PROJECT_ID', 'my-project')
+    self.org_id = os.getenv('ORG_ID', 'my-org')
+    self.region = os.getenv('REGION', 'us-central1')
 
   def test_assured_workloads(self):
     """Testing Assured Workload settings."""
@@ -55,5 +52,6 @@ class TestAssuredWorkloads(unittest.TestCase):
       workloads = request.execute()
       w = workloads['workloads']
       # left off here. err 403 on api endpoint
+      pause = True
     except Exception as e:
-      pass
+      pause = True
