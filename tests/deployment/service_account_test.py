@@ -31,6 +31,7 @@ class TestServiceAccounts(unittest.TestCase):
     """Call super class' setup and define some variables."""
     super().setUp()
     self.project_id = os.getenv('PROJECT_ID', 'my-project')
+    self.cmek_project_id = os.getenv('CMEK_PROJECT_ID', 'cmek-my-project')
     self.org_id = os.getenv('ORG_ID', 'my-org')
     self.region = os.getenv('REGION', 'us-central1')
     self.serviceaccount = 'itar-compute-sa'
@@ -42,26 +43,28 @@ class TestServiceAccounts(unittest.TestCase):
     service = discovery.build('iam',
                               'v1',
                               credentials=credentials)
-    try:
-      # Retrieve a list of all service accounts in the project
-      request = service.projects().serviceAccounts().list(
-          name='projects/{project}'.format(
-              project=self.project_id
-          )
-      )
-      service_accounts = request.execute()
-      # Determine if self.serviceaccount is in the list of SAs
-      itar_sa = None
-      for sa in service_accounts['accounts']:
-        sa_name = sa['name'].split('/')[-1].\
-          replace('@{}.iam.gserviceaccount.com'.format(self.project_id), '')
-        if sa_name == self.serviceaccount:
-          itar_sa = sa_name
-      self.assertTrue(itar_sa, 'missing {name} service account'.format(
-          name=self.serviceaccount
-      ))
-    except Exception as e: # pylint: disable=broad-except
-      raise e
+    for this_project in [self.project_id, self.cmek_project_id]:
+      try:
+        # Retrieve a list of all service accounts in the project
+        request = service.projects().serviceAccounts().list(
+            name='projects/{project}'.format(
+                project=this_project
+            )
+        )
+        service_accounts = request.execute()
+        # Determine if self.serviceaccount is in the list of SAs
+        itar_sa = None
+        for sa in service_accounts['accounts']:
+          sa_name = sa['name'].split('/')[-1].\
+            replace('@{}.iam.gserviceaccount.com'.format(this_project), '')
+          if sa_name == self.serviceaccount:
+            itar_sa = sa_name
+        self.assertTrue(itar_sa, 'missing {name} SA in {project}'.format(
+            name=self.serviceaccount,
+            project=this_project
+        ))
+      except Exception as e: # pylint: disable=broad-except
+        raise e
 
   def test_verify_policy_bindings(self):
     """Test that correct policy bindings are in place."""
