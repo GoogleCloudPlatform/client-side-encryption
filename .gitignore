@@ -144,3 +144,4 @@ testfile
 id_rsa
 id_rsa.pub
 metadata
+pkg/deb/client_side_encryption/usr/

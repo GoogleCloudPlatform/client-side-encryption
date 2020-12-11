@@ -35,23 +35,24 @@ class TestAssuredWorkloads(unittest.TestCase):
     self.region = os.getenv('REGION', 'us-central1')
 
   def test_assured_workloads(self):
-    """Testing Assured Workload settings (broken)."""
-    # # Get application-default credentials and initialize API client
-    # credentials = GoogleCredentials.get_application_default()
-    # service = discovery.build('assuredworkloads',
-    #                           'v1beta1',
-    #                           credentials=credentials)
-    # try:
-    #   request = service.organizations().locations().workloads().list(
-    #       parent='organizations/{org}/locations/{loc}'.format(
-    #           org=self.org_id,
-    #           loc=self.region
-    #       )
-    #   )
-    #   workloads = request.execute()
-    #   w = workloads['workloads']
-    #   # TODO: fix the authn error for the above. Hard-wiring to pass for now.
-    #   self.assertTrue(True)
-    # except Exception as e: # pylint: disable=broad-except
-    #   raise e
-    self.assertTrue(True)
+    """Testing Assured Workload settings."""
+    # Get application-default credentials and initialize API client
+    credentials = GoogleCredentials.get_application_default()
+    service = discovery.build('assuredworkloads',
+                              'v1beta1',
+                              credentials=credentials)
+    try:
+      request = service.organizations().locations().workloads().list(
+          parent='organizations/{org}/locations/{loc}'.format(
+              org=self.org_id,
+              loc=self.region
+          )
+      )
+      workloads = request.execute()
+      w = workloads['workloads']
+      pause = True
+      # TODO: fix the authn error for the above. Hard-wiring to pass for now.
+      self.assertTrue(True)
+    except Exception as e: # pylint: disable=broad-except
+      pause = True
+      raise e
