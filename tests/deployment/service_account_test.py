@@ -77,7 +77,8 @@ class TestServiceAccounts(unittest.TestCase):
     roles = {'roles/cloudkms.cryptoKeyEncrypterDecrypter': False,
              'roles/iam.serviceAccountKeyAdmin': False,
              'roles/storage.objectAdmin': False,
-             'roles/compute.viewer': False}
+             'roles/compute.viewer': False,
+             'roles/browser': False}
     try:
       request = service.projects().getIamPolicy(
           resource=self.project_id,
@@ -109,7 +110,8 @@ class TestServiceAccounts(unittest.TestCase):
                               'v1beta1',
                               credentials=credentials)
     # Dict of roles we want to check for SA membership
-    roles = {'roles/cloudkms.cryptoKeyEncrypterDecrypter': False}
+    roles = {'roles/cloudkms.cryptoKeyEncrypterDecrypter': False,
+             'roles/browser': False}
     try:
       request = service.projects().getIamPolicy(
           resource=self.cmek_project_id,
