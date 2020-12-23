@@ -43,31 +43,31 @@ class TestServiceAccounts(unittest.TestCase):
     service = discovery.build('iam',
                               'v1',
                               credentials=credentials)
-    for this_project in [self.project_id, self.cmek_project_id]:
-      try:
-        # Retrieve a list of all service accounts in the project
-        request = service.projects().serviceAccounts().list(
-            name='projects/{project}'.format(
-                project=this_project
-            )
-        )
-        service_accounts = request.execute()
-        # Determine if self.serviceaccount is in the list of SAs
-        itar_sa = None
-        for sa in service_accounts['accounts']:
-          sa_name = sa['name'].split('/')[-1].\
-            replace('@{}.iam.gserviceaccount.com'.format(this_project), '')
-          if sa_name == self.serviceaccount:
-            itar_sa = sa_name
-        self.assertTrue(itar_sa, 'missing {name} SA in {project}'.format(
-            name=self.serviceaccount,
-            project=this_project
-        ))
-      except Exception as e: # pylint: disable=broad-except
-        raise e
 
-  def test_verify_policy_bindings(self):
-    """Test that correct policy bindings are in place."""
+    try:
+      # Retrieve a list of all service accounts in the project
+      request = service.projects().serviceAccounts().list(
+          name='projects/{project}'.format(
+              project=self.project_id
+          )
+      )
+      service_accounts = request.execute()
+      # Determine if self.serviceaccount is in the list of SAs
+      itar_sa = None
+      for sa in service_accounts['accounts']:
+        sa_name = sa['name'].split('/')[-1].\
+          replace('@{}.iam.gserviceaccount.com'.format(self.project_id), '')
+        if sa_name == self.serviceaccount:
+          itar_sa = sa_name
+      self.assertTrue(itar_sa, 'missing {name} SA in {project}'.format(
+          name=self.serviceaccount,
+          project=self.project_id
+      ))
+    except Exception as e: # pylint: disable=broad-except
+      raise e
+
+  def test_verify_aw_policy_bindings(self):
+    """Test that correct policy bindings are in place for the AW project."""
     # Get application-default credentials and initialize API client
     credentials = GoogleCredentials.get_application_default()
     service = discovery.build('cloudresourcemanager',
@@ -81,6 +81,38 @@ class TestServiceAccounts(unittest.TestCase):
     try:
       request = service.projects().getIamPolicy(
           resource=self.project_id,
+          body={}
+      )
+      policy = request.execute()
+      # Build the resource string
+      resource = 'serviceAccount:{sa}@{proj}.iam.gserviceaccount.com'.format(
+          sa=self.serviceaccount,
+          proj=self.project_id
+      )
+      # Iterate over the policy bindings and flip role membership booleans
+      for binding in policy['bindings']:
+        if resource in binding['members']:
+          roles[binding['role']] = True
+      for role in roles.keys():
+        self.assertTrue(roles[role], '{resource} missing role {role}'.format(
+            resource=resource,
+            role=role
+        ))
+    except Exception as e:  # pylint: disable=broad-except
+      raise e
+
+  def test_verify_cmek_policy_bindings(self):
+    """Test that correct policy bindings are in place for the CMEK project."""
+    # Get application-default credentials and initialize API client
+    credentials = GoogleCredentials.get_application_default()
+    service = discovery.build('cloudresourcemanager',
+                              'v1beta1',
+                              credentials=credentials)
+    # Dict of roles we want to check for SA membership
+    roles = {'roles/cloudkms.cryptoKeyEncrypterDecrypter': False}
+    try:
+      request = service.projects().getIamPolicy(
+          resource=self.cmek_project_id,
           body={}
       )
       policy = request.execute()

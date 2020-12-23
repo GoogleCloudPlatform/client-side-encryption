@@ -36,7 +36,9 @@ class TestEnabledAPIs(unittest.TestCase):
                          'compute.googleapis.com',
                          'iam.googleapis.com',
                          'iamcredentials.googleapis.com',
-                         'oslogin.googleapis.com'}
+                         'oslogin.googleapis.com',
+                         'serviceusage.googleapis.com',
+                         'cloudresourcemanager.googleapis.com'}
 
   def test_enabled_apis(self):
     """Testing to see if any APIs need to be flipped."""
