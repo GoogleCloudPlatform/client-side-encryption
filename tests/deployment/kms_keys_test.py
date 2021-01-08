@@ -41,6 +41,14 @@ class TestKSM(unittest.TestCase):
     # Create cache of all KMS Keys
     self.get_crypto_keys()
 
+  def test_keyring_exists(self):
+    """Verify that at least one keyring exists."""
+    self.assertGreater(len(self.all_key_rings), 0, "No Keyrings Exist")
+
+  def test_key_exists(self):
+    """Verify that at least one key exists."""
+    self.assertGreater(len(self.all_crypto_keys), 0, "No Keys Exist")
+
   def test_imported_keys(self):
     """Verify that importJob is null, which indicates a generated key."""
     for crypto_key in self.all_crypto_keys:
