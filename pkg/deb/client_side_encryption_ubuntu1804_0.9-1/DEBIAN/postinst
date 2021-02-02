@@ -17,7 +17,7 @@
 update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
 update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
 update-alternatives --set python3 /usr/bin/python3.8
-#wget -O /var/tmp/bazel-3.7.1-installer-linux-x86_64.sh https://github.com/bazelbuild/bazel/releases/download/3.7.1/bazel-3.7.1-installer-linux-x86_64.sh
-#chmod +x /var/tmp/bazel-3.7.1-installer-linux-x86_64.sh
-#/var/tmp/bazel-3.7.1-installer-linux-x86_64.sh
+wget -O /var/tmp/bazel-3.7.1-installer-linux-x86_64.sh https://github.com/bazelbuild/bazel/releases/download/3.7.1/bazel-3.7.1-installer-linux-x86_64.sh
+chmod +x /var/tmp/bazel-3.7.1-installer-linux-x86_64.sh
+/var/tmp/bazel-3.7.1-installer-linux-x86_64.sh
 pip3 install -r /opt/client_side_encryption/pip3_requirements.txt
