@@ -76,7 +76,7 @@ class TestServiceAccounts(unittest.TestCase):
     # Dict of roles we want to check for SA membership
     roles = {'roles/cloudkms.cryptoKeyEncrypterDecrypter': False,
              'roles/iam.serviceAccountKeyAdmin': False,
-             'roles/storage.objectAdmin': False,
+             'roles/storage.admin': False,
              'roles/compute.viewer': False,
              'roles/browser': False}
     try:
