@@ -1,4 +1,4 @@
-Package: client-side-encryption-ubuntu1804
+Package: client-side-encryption
 Version: 0.9-1
 Depends: gcc, make, python2.7, python2.7-dev, python3.8, python3.8-dev, python3-pip, unzip, zip
 Section: custom
