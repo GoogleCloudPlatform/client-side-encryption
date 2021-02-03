@@ -1,6 +1,6 @@
 Package: client-side-encryption-ubuntu1604
 Version: 0.9-1
-Depends: gcc, make, python2.7, python2.7-dev, python3 (>= 3.8.5), python3-dev, python3-pip, unzip, zip
+Depends: gcc, make, python2.7, python2.7-dev, python3.8 (>= 3.8.5), python3-dev, python3-pip, unzip, zip
 Section: custom
 Priority: optional
 Architecture: amd64
