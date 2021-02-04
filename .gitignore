@@ -146,3 +146,5 @@ id_rsa.pub
 metadata
 pkg/deb/client_side_encryption/usr/
 .vscode/
+.DS_Store
+*/.DS_Store
