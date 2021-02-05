@@ -1,0 +1,10 @@
+Package: client-side-encryption
+Version: 0.9.2
+Depends: gcc, make, python2.7, python2.7-dev, python3.8, python3.8-dev, python3-pip, unzip, zip
+Section: custom
+Priority: optional
+Architecture: amd64
+Essential: no
+Installed-Size: 184320
+Maintainer: cloud.google.com
+Description: Client Side Encryption wrappers for gsutil and GCS client libraries

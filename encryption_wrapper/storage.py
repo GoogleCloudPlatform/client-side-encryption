@@ -215,6 +215,15 @@ class Blob(storage.Blob):
         timeout=60,
         checksum='md5')
 
+    # Apply custom metadata. We instanciate a new GCS Client here so we don't
+    # default to any from outer scopes
+    metadata_client = storage.Client()
+    metadata_bucket = metadata_client.get_bucket(self.bucket.name)
+    metadata_blob = metadata_bucket.get_blob(self.name)
+    metadata = {'client-side-encrypted': 'true'}
+    metadata_blob.metadata = metadata
+    metadata_blob.patch(client=metadata_client)
+
     # Clean up
     shutil.rmtree(_TMP_LOCATION)
 
