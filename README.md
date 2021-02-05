@@ -1,4 +1,4 @@
-# encryption-wrapper
+# Client Side Encryption wrapper
 
 This project wraps `gsutil` and the Python client library for Google Cloud Storage in order to perform local encryption and decryption.
 
