@@ -5,7 +5,14 @@ This project wraps `gsutil` and the Python client library for Google Cloud Stora
 ## Installation
 
 The process for installing this encryption wrapper is as follows:
-1. Clone this repository
+1. Install the package
+
+```bash
+wget https://github.com/GoogleCloudPlatform/client-side-encryption/releases/download/latest/client_side_encryption_latest.deb
+apt-get update
+apt-get install -y ./client_side_encryption.latest.deb
+```
+
 2. Create a KMS key (note that this should be in the same region as the instances that will be calling KMS)
 3. Create a service account
 4. Assign roles to the service account
